@@ -1,0 +1,61 @@
+@page "/scan"
+@using PSC.Blazor.Components.BrowserDetect
+@using Blazored.Toast.Services
+@using Blazored.Toast.Configuration
+@inject IToastService toastService
+@rendermode InteractiveServer
+
+<PageTitle>Scanning sample</PageTitle>
+
+<BrowserDetect @bind-BrowserInfo="@BrowserInfo"/>
+
+<DocuVieware
+    @ref="DocuVieware"
+    ControlId="scanning"
+    Height="100vh"
+    UserInterfaceTheme="UserInterfaceTheme.Light"
+    OnControlInitialized="OnControlLoaded"
+    CollapsedSnapIn="true"
+    EnableFileUploadButton="false"
+    EnableLoadFromUriButton="false"
+    AllowUpload="false"
+    Locale="Locale"/>
+
+
+@code{
+
+    DocuVieware DocuVieware;
+    BrowserInfo? BrowserInfo { get; set; }
+
+    DocuViewareLocale Locale => System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName switch
+    {
+        "fr" => DocuViewareLocale.Fr,
+        "de" => DocuViewareLocale.De,
+        "es" => DocuViewareLocale.Es,
+        "it" => DocuViewareLocale.It,
+        "pt" => DocuViewareLocale.Pt,
+        "ru" => DocuViewareLocale.Ru,
+        "zh" => DocuViewareLocale.Zh,
+        "ja" => DocuViewareLocale.Ja,
+        "ko" => DocuViewareLocale.Ko,
+        _ => DocuViewareLocale.En
+    };
+
+    private async Task OnControlLoaded()
+    {
+        if (BrowserInfo?.OSName is not "Windows")
+        {
+            toastService.ShowError("TWAIN capability is only supported on Windows OS.", settings =>
+            {
+                settings.Position = ToastPosition.TopRight;
+                settings.IconType = IconType.Blazored;
+                settings.ShowCloseButton = true;
+            });
+        }
+        else
+        {
+            await DocuVieware.TwainAcquire();
+        }
+    }
+
+}

@@ -1,0 +1,42 @@
+@page "/theming"
+@rendermode InteractiveServer
+
+<PageTitle>Theming</PageTitle>
+
+<div class="row btn-toolbar">
+    <div class="btn-group mr-2">
+        @foreach (var theme in Enum.GetValues<UserInterfaceTheme>().Skip(1)) // Skip the default value
+        {
+            var className = "btn-outline-info";
+            if (SelectedUserInterfaceTheme == theme)
+            {
+                className = "btn-info";
+            }
+            <button class="btn @className" @onclick="() => SetTheme(theme)">@theme</button>
+        }
+    </div>
+</div>
+
+<DocuVieware 
+    @ref="DocuVieware"
+    ControlId="theming"
+    Height="95vh"
+    UserInterfaceTheme="@SelectedUserInterfaceTheme" 
+    OnControlInitialized="OnControlLoaded"
+/>
+
+@code{
+    DocuVieware DocuVieware;
+    UserInterfaceTheme SelectedUserInterfaceTheme = UserInterfaceTheme.Light;
+
+    private async Task OnControlLoaded()
+    {
+        await DocuVieware.LoadFromUri(new Uri("https://pspdfkit.com/demo/examples/hello/example.pdf"));
+    }
+
+    private void SetTheme(UserInterfaceTheme theme)
+    {
+        SelectedUserInterfaceTheme = theme;
+    }
+
+}

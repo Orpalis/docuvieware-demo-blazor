@@ -1,0 +1,23 @@
+@page "/annotation"
+@rendermode InteractiveServer
+
+<PageTitle>Viewer</PageTitle>
+
+<DocuVieware 
+    @ref="DocuVieware" 
+    ControlId="annotation"
+    Height="100vh"
+    UserInterfaceTheme="UserInterfaceTheme.California" 
+    OnControlInitialized="OnControlLoaded"
+/>
+
+@code{
+
+    DocuVieware DocuVieware;
+
+    private async Task OnControlLoaded()
+    {
+        await DocuVieware.SelectAnnotationsSnapIn();
+        await DocuVieware.LoadFromUri(new Uri("https://pspdfkit.com/demo/examples/hello/example.pdf"));
+    }
+}
