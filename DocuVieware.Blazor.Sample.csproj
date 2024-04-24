@@ -9,7 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Blazored.Toast" Version="4.1.0" />
-      <PackageReference Include="DocuVieware.Blazor" Version="0.9.0.1-rc" />
+      <PackageReference Include="DocuVieware.Blazor" Version="0.9.1-rc" />
       <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.14" />
     </ItemGroup>
 
